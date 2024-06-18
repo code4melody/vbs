@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Battle!</title>
+<style>
+body {
+  font-family: sans-serif;
+  background-color: #bcfffc;
+}
+
+meter {
+  width: 1000px;
+  height: 50px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+meter::-webkit-meter-bar {
+  background-color: yellow;
+}
+
+meter::-webkit-meter-optimum-value {
+  background-color: red;
+}
+
+#enemyName {
+  font-size: 3em;
+}
+
+#healthBarContainer {
+  text-align: center;
+  margin: auto;
+}
+
+#healthBar {
+  margin: auto;
+}
+
+#battleGround {
+  height: 800px;
+  padding-top: 200px;
+  text-align: center;
+  margin: auto;
+  border: 1px solid black;
+  background-image: url('eden.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+#specialMoves {
+  margin: auto;
+}
+
+#fighters {
+  margin: auto;
+  bottom: 0;
+}
+
+#attackContainer {
+  font-size: 2em;
+  text-align: center;
+}
+#attack {
+  font-size: 50px;
+}
+
+#attackCounter {
+  color: red;
+  font-weight: bold;
+}
+</style>
+
+<script>
+var attacks = ["slash.gif"]
+var index = 0
+var interval
+function attack() {
+  var attackSection = document.getElementById("specialMoves")
+  var enemyHealth = document.getElementById("enemyHealth")
+
+  if (index == 0) {
+    var attackCounter = Number(document.getElementById("attackCounter").innerText)
+    attackSection.style.display = "block"
+    attackSection.src = attacks[index]
+    document.getElementById("attackCounter").innerText = attackCounter + 1
+    interval = setInterval(attack, 500)
+
+    var damage = Math.round(Math.random() * 10)
+    enemyHealth.value = enemyHealth.value + damage
+
+    if (enemyHealth.value >= 100) {
+      var enemyImage = document.getElementById("snakeImg")
+      var playerImage = document.getElementById("playerImg")
+      enemyImage.style.display = "none"
+      playerImage.style.display = "none"
+
+      attackSection.src = "win.gif"
+      index = 0
+      clearInterval(interval)
+    }
+
+    else {
+      index++
+    }
+    
+  }
+
+  else {
+    attackSection.style.display = "none"
+    index = 0
+    clearInterval(interval)
+  }
+}
+
+</script>
+</head>
+<body>
+<div id="healthBarContainer">
+  <table id="healthBar">
+    <tr>
+      <td id="enemy">
+        <meter id="enemyHealth" value="0" max="100"></meter>
+      </td>
+    </tr>
+    <tr>
+      <td id="enemyName">SERPENT OF EDEN</td>
+    </tr>
+  </table>
+</div>
+<div id="battleGround">
+  <table id="fighters">
+    <tr>
+      <td><img id="snakeImg" src="snake.gif" width="360" /></td>
+      <td width="550"><img id="specialMoves" /></td>
+      <td><img id="playerImg" src="player.png" width="360" /></td>
+    </tr>
+  </table>
+</div>
+<br>
+<div id="attackContainer">
+  Attack Count: <span id="attackCounter">0</span>
+  <br>
+<button id="attack" onclick="attack()">Attack</button>
+</div>
+</body>
+</html>
